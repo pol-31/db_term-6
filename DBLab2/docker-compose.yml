@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    build: ./app/
+    networks:
+      - ntw
+    volumes:
+      - ./app:/usr/src/app
+      # - ./backups:/usr/src/app/backups
+    depends_on:
+      - db
+      - flyway
+  db:
+    image: postgres:11-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=dreamTeam
+      - POSTGRES_PASSWORD=dreamTeam
+      - POSTGRES_DB=zno_data
+      - POSTGRES_HOST=db
+    ports:
+      - '5432:5432'
+    networks:
+      - ntw
+  flyway:
+    build: ./flyway/
+    restart: always
+    networks:
+      - ntw
+    volumes:
+      - ./flyway/sql:/flyway/sql
+      - ./flyway/conf:/flyway/conf
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+networks:
+  ntw:
+
+
+
