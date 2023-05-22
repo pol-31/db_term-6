@@ -1,0 +1,55 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Student ID</th>
+                <th scope="col">Subject ID</th>
+                <th scope="col">PT ID</th>
+                <th scope="col">Test</th>
+                <th scope="col">Test status</th>
+                <th scope="col">ball100</th>
+                <th scope="col">ball12</th>
+                <th scope="col">ball</th>
+                <th scope="col">Adapt scale</th>
+                <th scope="col">Language</th>
+                <th scope="col">DPA</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for marks in markss %}
+            <tr >
+                <td> {{marks.fk_student_id}} </td>
+                <td> {{marks.fk_subject}} </td>
+                <td> {{marks.fk_pt}} </td>
+                <td> {{marks.test}} </td>
+                <td> {{marks.test_status}} </td>
+                <td> {{marks.ball100}} </td>
+                <td> {{marks.ball12}} </td>
+                <td> {{marks.ball}} </td>
+                <td> {{marks.adapt_scale}} </td>
+                <td> {{marks.lang}} </td>
+                <td> {{marks.dpa}} </td>
+                <td>
+                    <button type="button" class="btn btn-warning" name="btn_edit_marks" data-marks_info="{{marks.fk_student_id}}|{{marks.fk_subject}}">Edit</button>
+                    <button type="button" class="btn btn-danger" name="btn_delete_marks" data-marks_info="{{marks.fk_student_id}}|{{marks.fk_subject}}">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td> <button type="button" class="btn btn-success" name="btn_new_marks">New Marks</button> </td>
+            </tr>
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/marks.js') }}"></script>
+
+{% endblock %}

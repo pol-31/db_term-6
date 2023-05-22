@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Workshop</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+  <div class="navbar-header">
+        <a class="navbar-brand" href="https://github.com/pol-31/db_term-6">Tsaruk_Orlenko_Kominko__KM-03</a>
+  </div>
+
+  <ul class="navbar-nav">
+    <li class="nav-item"><a class="nav-link" href="/student">Students</a></li>
+    <li class="nav-item"><a class="nav-link" href="/marks">Marks</a></li>
+    <li class="nav-item"><a class="nav-link" href="/subject">Subjects</a></li>
+    <li class="nav-item"><a class="nav-link" href="/region">Regions</a></li>
+    <li class="nav-item"><a class="nav-link" href="/eo">EO</a></li>
+    <li class="nav-item"><a class="nav-link" href="/pt">PT</a></li>
+    <li class="nav-item"><a class="nav-link" href="/reg_region">Registration regions</a></li>
+    <li class="nav-item"><a class="nav-link" href="/results">Results</a></li>
+  </ul>
+
+</nav>
+
+<div class="container">
+
+  {% block content %}<h1>Welcome page</h1>{% endblock %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">EO ID</th>
+                <th scope="col">EO name</th>
+                <th scope="col">EO type</th>
+                <th scope="col">EO parent</th>
+                <th scope="col">EO region ID</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for eo in eos %}
+            <tr >
+                <td> {{eo.id}} </td>
+                <td> {{eo.name}} </td>
+                <td> {{eo.type}} </td>
+                <td> {{eo.parent}} </td>
+                <td> {{eo.fk_region}} </td>
+                <td>
+                    <button type="button" class="btn btn-warning" name="btn_edit_eo" data-id="{{eo.id}}">Edit</button>
+                    <button type="button" class="btn btn-danger" name="btn_delete_eo" data-id="{{eo.id}}">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td> <button type="button" class="btn btn-success" name="btn_new_eo">New EO</button> </td>
+            </tr>
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/eo.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <h1>Bar Chart</h1>
+    <div id="bar"></div>
+
+    <h1>Pie Chart</h1>
+    <div id="pie"></div>
+    
+    <h1>Configurations</h1>
+    <div>
+        <div id="subject">
+            <h3>SUBJECT</h3>
+            <input type="radio" name="subject" value="1"> ukr
+            <input type="radio" name="subject" value="2"> hist
+            <input type="radio" name="subject" value="3"> math
+            <input type="radio" name="subject" value="4"> phys
+            <input type="radio" name="subject" value="5"> chem
+            <input type="radio" name="subject" value="6"> bio
+            <input type="radio" name="subject" value="7"> geo
+            <input type="radio" name="subject" value="8"> eng
+            <input type="radio" name="subject" value="9"> fra
+            <input type="radio" name="subject" value="10"> deu
+            <input type="radio" name="subject" value="11"> spa
+            <input type="radio" name="subject" value="0"> all
+        </div>
+        <div id="year">
+            <h3>YEAR</h3>
+            <input type="radio" name="year" value="0"> all
+            <input type="radio" name="year" value="1"> 2020
+            <input type="radio" name="year" value="2"> 2019
+        </div>
+        <div id="region">
+            <h3>REGION</h3>
+            <input type="radio" name="region" value="0"> all
+            <input type="radio" name="region" value="2204"> Львівська область
+            <input type="radio" name="region" value="2333"> Луганська область
+            <input type="radio" name="region" value="2206"> Сумська область
+            <input type="radio" name="region" value="2200"> Херсонська область
+            <input type="radio" name="region" value="2211"> Полтавська область
+            <input type="radio" name="region" value="2198"> Чернівецька область
+            <input type="radio" name="region" value="2237"> Вінницька область
+            <input type="radio" name="region" value="2254"> Миколаївська область
+            <input type="radio" name="region" value="2192"> Кіровоградська область
+            <input type="radio" name="region" value="2248"> Житомирська область
+            <input type="radio" name="region" value="2687"> м.Київ
+            <input type="radio" name="region" value="2197"> Дніпропетровська область
+            <input type="radio" name="region" value="2236"> Волинська область
+            <input type="radio" name="region" value="2203"> Київська область
+            <input type="radio" name="region" value="2194"> Хмельницька область
+            <input type="radio" name="region" value="2230"> Тернопільська область
+            <input type="radio" name="region" value="2199"> Донецька область
+            <input type="radio" name="region" value="2228"> Запорізька область
+            <input type="radio" name="region" value="2196"> Черкаська область
+            <input type="radio" name="region" value="2208"> Одеська область
+            <input type="radio" name="region" value="2227"> Рівненська область
+            <input type="radio" name="region" value="2216"> Закарпатська область
+            <input type="radio" name="region" value="2213"> Харківська область
+            <input type="radio" name="region" value="2193"> Чернігівська область
+            <input type="radio" name="region" value="2235"> Івано-Франківська область
+        </div>
+    </div>
+
+    <button type="button" id="btn_get_results">Get results</button>
+
+    <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plotly-latest.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/results.js') }}"></script>
+{% endblock %}
+
