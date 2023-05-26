@@ -1,7 +1,7 @@
 document.getElementById("btn_get_results").addEventListener("click", function() {
-    var subjectValue = parseInt(document.querySelector('input[name="subject"]:checked').value);
-    var yearValue = parseInt(document.querySelector('input[name="year"]:checked').value);
-    var regionValue = parseInt(document.querySelector('input[name="region"]:checked').value);
+    var subjectValue = document.querySelector('input[name="subject"]:checked').value;
+    var yearValue = document.querySelector('input[name="year"]:checked').value;
+    var regionValue = document.querySelector('input[name="region"]:checked').value;
 
     var data = {
         subject: subjectValue,
