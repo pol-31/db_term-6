@@ -12,6 +12,7 @@ services:
     depends_on:
       - db
       - flyway
+      - redis
   db:
     image: postgres:11-alpine
     restart: always
@@ -31,6 +32,11 @@ services:
       - ntw
     depends_on:
       - db
+  redis:
+    image: redis:latest
+    restart: always
+    networks:
+      - ntw
 networks:
   ntw:
 

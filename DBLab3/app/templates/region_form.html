@@ -56,6 +56,19 @@
                     </div>
                 {%endif%}
             </div>
+            
+            <div class="form-group">
+                {{ form.region_id.label }}
+                {{ form.region_id(class_="form-control") }}
+
+                {% if form.region_id.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.region_id.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
 
                 {{ form.submit(class_="btn btn-success") }}
             </form>
