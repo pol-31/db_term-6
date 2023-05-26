@@ -15,8 +15,8 @@ RUN apt update \
 ENV DB_DATA_YEAR1=2020
 ENV DB_DATA_YEAR2=2019
 
-# how many inserts of each table
-ENV DB_DATA_LIMIT=10000
+# how many inserts of each table (or -1)
+ENV DB_DATA_LIMIT=-1
 
 # create main table (tbl_zno_results) or not (True or False)
 ENV DB_DO_INIT=True
