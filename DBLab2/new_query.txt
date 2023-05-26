@@ -1,0 +1,8 @@
+select avg(ball100) as avg_ball, reg from tbl_zno_marks
+join tbl_zno_student on (tbl_zno_student.id = tbl_zno_marks.fk_student_id
+						 AND tbl_zno_marks.fk_subject = (select id from tbl_zno_subject where name='ukr')
+						 AND tbl_zno_marks.test_status = 'Зараховано')
+join tbl_zno_reg_region on tbl_zno_reg_region.id = tbl_zno_student.fk_student_reg
+join tbl_zno_region on tbl_zno_reg_region.fk_region = tbl_zno_region.id
+group by reg
+order by avg_ball;
