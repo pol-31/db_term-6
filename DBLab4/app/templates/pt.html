@@ -1,0 +1,39 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">PT ID</th>
+                <th scope="col">PT name</th>
+                <th scope="col">PT region ID</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pt in pts %}
+            <tr >
+                <td> {{pt.id}} </td>
+                <td> {{pt.name}} </td>
+                <td> {{pt.fk_region}} </td>
+                <td>
+                    <button type="button" class="btn btn-warning" name="btn_edit_pt" data-id="{{pt.id}}">Edit</button>
+                    <button type="button" class="btn btn-danger" name="btn_delete_pt" data-id="{{pt.id}}">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td> <button type="button" class="btn btn-success" name="btn_new_pt">New PT</button> </td>
+            </tr>
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/pt.js') }}"></script>
+
+{% endblock %}
