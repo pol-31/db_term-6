@@ -1,0 +1,49 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Student ID</th>
+                <th scope="col">Student birth</th>
+                <th scope="col">Student sex</th>
+                <th scope="col">Student status</th>
+                <th scope="col">Student class profile</th>
+                <th scope="col">Student class language</th>
+                <th scope="col">Student registration</th>
+                <th scope="col">Student EO</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr >
+                <td> {{student.id}} </td>
+                <td> {{student.birth}} </td>
+                <td> {{student.sex}} </td>
+                <td> {{student.status}} </td>
+                <td> {{student.class_profile}} </td>
+                <td> {{student.class_lang}} </td>
+                <td> {{student.fk_student_reg}} </td>
+                <td> {{student.fk_eo}} </td>
+                <td>
+                    <button type="button" class="btn btn-warning" name="btn_edit_student" data-id="{{student.id}}">Edit</button>
+                    <button type="button" class="btn btn-danger" name="btn_delete_student" data-id="{{student.id}}">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td> <button type="button" class="btn btn-success" name="btn_new_student">New Student</button> </td>
+            </tr>
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/student.js') }}"></script>
+
+{% endblock %}

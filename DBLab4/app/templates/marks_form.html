@@ -1,0 +1,183 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+<!--https://www.codeply.com/go/nhbdi2FkJm-->
+
+
+<div class="col-md-6 mx-auto">
+
+    <!-- form card login -->
+    <div class="card rounded-0">
+
+        <div class="card-header">
+            <h3 class="mb-0">{{form_name}}</h3>
+        </div>
+        <div class="card-body">
+
+            <form class="form"  action = "/{{action}}" method = post>
+            <div class="form-group">
+                {{ form.fk_student_id.label }}
+                {{ form.fk_student_id(class_="form-control") }}
+
+                {% if form.fk_student_id.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.fk_student_id.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.fk_subject.label }}
+                {{ form.fk_subject(class_="form-control") }}
+
+                {% if form.fk_subject.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.fk_subject.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.fk_pt.label }}
+                {{ form.fk_pt(class_="form-control") }}
+
+                {% if form.fk_pt.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.fk_pt.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.test.label }}
+                {{ form.test(class_="form-control") }}
+
+                {% if form.test.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.test.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.test_status.label }}
+                {{ form.test_status(class_="form-control") }}
+
+
+                {% if form.test_status.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.test_status.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+            
+            <div class="form-group">
+                {{ form.ball100.label }}
+                {{ form.ball100(class_="form-control") }}
+
+                {% if form.ball100.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.ball100.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.ball12.label }}
+                {{ form.ball12(class_="form-control") }}
+
+                {% if form.ball12.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.ball12.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.ball.label }}
+                {{ form.ball(class_="form-control") }}
+
+                {% if form.ball.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.ball.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.adapt_scale.label }}
+                {{ form.adapt_scale(class_="form-control") }}
+
+                {% if form.adapt_scale.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.adapt_scale.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.lang.label }}
+                {{ form.lang(class_="form-control") }}
+
+
+                {% if form.lang.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.lang.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+            {{ form.dpa.label }}
+            {{ form.dpa(class_="form-control") }}
+
+
+            {% if form.dpa.errors%}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in form.dpa.errors %}
+                         <div>{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {%endif%}
+        </div>
+
+
+
+                {{ form.submit(class_="btn btn-success") }}
+            </form>
+        </div>
+        <!--/card-block-->
+    </div>
+    <!-- /form card login -->
+
+</div>
+
+</div>
+
+
+
+
+{% endblock %}

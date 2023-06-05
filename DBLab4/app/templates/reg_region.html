@@ -1,0 +1,39 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+ <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Registration region ID</th>
+                <th scope="col">Registration region type</th>
+                <th scope="col">Region ID</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reg_region in reg_regions %}
+            <tr >
+                <td> {{reg_region.id}} </td>
+                <td> {{reg_region.ter_type}} </td>
+                <td> {{reg_region.fk_region}} </td>
+                <td>
+                    <button type="button" class="btn btn-warning" name="btn_edit_reg_region" data-id="{{reg_region.id}}">Edit</button>
+                    <button type="button" class="btn btn-danger" name="btn_delete_reg_region" data-id="{{reg_region.id}}">Delete</button>
+                </td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td> <button type="button" class="btn btn-success" name="btn_new_reg_region">New registration region</button> </td>
+            </tr>
+        </tbody>
+    </table>
+ </div>
+
+    <script src="{{ url_for('static', filename='js/reg_region.js') }}"></script>
+
+{% endblock %}

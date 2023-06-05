@@ -1,0 +1,87 @@
+
+
+{% extends "index.html" %}
+
+{% block content %}
+
+<!--https://www.codeply.com/go/nhbdi2FkJm-->
+
+
+<div class="col-md-6 mx-auto">
+
+    <!-- form card login -->
+    <div class="card rounded-0">
+
+        <div class="card-header">
+            <h3 class="mb-0">{{form_name}}</h3>
+        </div>
+        <div class="card-body">
+
+            <form class="form"  action = "/{{action}}" method = post>
+            <div class="form-group">
+                {{ form.reg.label }}
+                {{ form.reg(class_="form-control") }}
+
+                {% if form.reg.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.reg.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.area.label }}
+                {{ form.area(class_="form-control") }}
+
+                {% if form.area.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.area.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+            <div class="form-group">
+                {{ form.ter.label }}
+                {{ form.ter(class_="form-control") }}
+
+                {% if form.ter.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.ter.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+            
+            <div class="form-group">
+                {{ form.id.label }}
+                {{ form.id(class_="form-control") }}
+
+                {% if form.id.errors%}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in form.id.errors %}
+                             <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {%endif%}
+            </div>
+
+                {{ form.submit(class_="btn btn-success") }}
+            </form>
+        </div>
+        <!--/card-block-->
+    </div>
+    <!-- /form card login -->
+
+</div>
+
+</div>
+
+
+
+
+{% endblock %}
