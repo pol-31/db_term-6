@@ -1,7 +1,20 @@
 version: '3.8'
 services:
   app:
-    build: ./app/
+    build:
+      context: ./app/
+      dockerfile: Dockerfile
+      args:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_HOST=${POSTGRES_HOST}
+        - POSTGRES_PORT=${POSTGRES_PORT}
+        - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+        - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+        - MONGO_HOSTNAME=${MONGO_HOSTNAME}
+        - MONGO_PORT=${MONGO_PORT}
     ports:
       - 5000:5000
     networks:
@@ -10,32 +23,40 @@ services:
       - .:/usr/src/results
       - ./app/backups:/usr/src/backups
     depends_on:
-      - db
+      - postgredb
       - flyway
       - redis
-      #- mongodb
+      - mongodb
       
-  db:
+  postgredb:
     image: postgres:11-alpine
     restart: always
     environment:
-      - POSTGRES_USER=dreamTeam
-      - POSTGRES_PASSWORD=dreamTeam
-      - POSTGRES_DB=zno_data
-      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     ports:
-      - '5432:5432'
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
       - ntw
       
   flyway:
-    build: ./flyway/
+    build:
+      context: ./flyway/
+      dockerfile: Dockerfile
+      args:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_HOST=${POSTGRES_HOST}
+        - POSTGRES_PORT=${POSTGRES_PORT}
     restart: always
     networks:
       - ntw
     depends_on:
-      - db
-      
+      - postgredb
   redis:
     image: redis:latest
     restart: always
@@ -46,16 +67,15 @@ services:
     image: mongo:latest
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
-      - MONGO_INITDB_DATABASE=your_database_name
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_HOSTNAME=${MONGO_HOSTNAME}
+      - MONGO_PORT=${MONGO_PORT}
     ports:
-      - '27017:27017'
+      - ${MONGO_PORT}:${MONGO_PORT}
     networks:
       - ntw
-    #volumes:
-    #  - ./mongodb.conf:/etc/mongod.conf
-    #command: mongod --config /etc/mongod.conf
 networks:
   ntw:
 

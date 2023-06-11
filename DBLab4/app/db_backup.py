@@ -7,6 +7,7 @@ import schedule
 import psycopg2
 
 import db_init
+import db_config
 
 def create_backup(_backup_file: str):
     _path = _backup_file[:_backup_file.rfind('/')]
@@ -14,7 +15,7 @@ def create_backup(_backup_file: str):
     open(_backup_file, 'w').close()
     dump_command = [
         'pg_dump',
-        '--dbname=postgresql://{}:{}@{}:{}/{}'.format('dreamTeam', 'dreamTeam', 'db', '5432', 'zno_data'),
+        '--dbname=postgresql://{}:{}@{}:{}/{}'.format(db_config.db_main_user, db_config.db_main_password, db_config.db_main_host, db_config.db_main_port, db_config.db_main_name),
         '-F', 'c',
         '-b',
         '-v',
@@ -32,7 +33,7 @@ def restore_backup(_conn, _backup_file: str, do_db_init = True):
         db_init.timer()
         restore_command = [
             'pg_restore',
-            '--dbname=postgresql://{}:{}@{}:{}/{}'.format('dreamTeam', 'dreamTeam', 'db', '5432', 'zno_data'),
+            '--dbname=postgresql://{}:{}@{}:{}/{}'.format(db_config.db_main_user, db_config.db_main_password, db_config.db_main_host, db_config.db_main_port, db_config.db_main_name),
             '-F', 'c',
             '-v',
             _backup_file

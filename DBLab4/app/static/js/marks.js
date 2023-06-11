@@ -1,12 +1,12 @@
 $("button[name='btn_delete_marks']").click(function() {
     var marks_info = $(this).data('marks_info');
     var marks_data = marks_info.split('|');
-    var marks_fk_student_id = marks_data[0];
-    var marks_fk_subject = marks_data[1];
+    var fk_student_id = marks_data[0];
+    var fk_subject = marks_data[1];
     
     var data = {
-        marks_fk_student_id: marks_fk_student_id,
-        marks_fk_subject: marks_fk_subject
+        fk_student_id: fk_student_id,
+        fk_subject: fk_subject
     };
 
     $.ajax({
@@ -22,7 +22,7 @@ $("button[name='btn_delete_marks']").click(function() {
 
 
 $("button[name='btn_edit_marks']").click(function() {
-    window.location = "edit_marks?marks_fk_student_id=" + $(this).data('stud_id') + "&marks_fk_subject=" + $(this).data('subj_id');
+    window.location = "edit_marks?fk_student_id=" + $(this).data('stud_id') + "&fk_subject=" + $(this).data('subj_id');
 });
 
 

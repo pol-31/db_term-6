@@ -7,6 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    
+    <style>
+      body {
+        background-color: var(--bg-color, grey);
+      }
+    </style>
 </head>
 <body>
 
@@ -26,7 +32,7 @@
     <li class="nav-item"><a class="nav-link" href="/reg_region">Registration regions</a></li>
     <li class="nav-item"><a class="nav-link" href="/results">Results</a></li>
     <li class="nav-item">
-        <button type="button" class="btn btn-warning" name="btn_db_switch">Switch DB</button>
+        <button type="button" class="btn btn-warning" name="btn_db_switch">{{ cur_db_name }}</button>
     </li>
   </ul>
 
@@ -39,6 +45,11 @@
   {% block content %}<h1>Welcome page</h1>{% endblock %}
 
 </div>
+
+<script>
+  var bgColor = "{{ bg_color }}";
+  document.documentElement.style.setProperty('--bg-color', bgColor);
+</script>
 
 </body>
 </html>

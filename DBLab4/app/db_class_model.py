@@ -24,10 +24,6 @@ class ZnoMarks(ABC):
     pass
 
 class Database(ABC):
-    # __init__ requires: db, name
-    #fltr = {filter_name:value, ...}
-    #form: wtform 
-
     @abstractmethod
     def get(self, tbl, num):
         pass
@@ -49,6 +45,18 @@ class Database(ABC):
         pass
         
     @abstractmethod
+    def get_attrs(self, tbl):
+        pass
+        
+    @abstractmethod
+    def get_value(self, obj, attr):
+        pass
+        
+    @abstractmethod
+    def get_new_id(self, tbl):
+        pass
+        
+    @abstractmethod
     def make_query(self, regionValue, subjectValue, yearValue):
         pass
 
@@ -58,6 +66,7 @@ class DatabaseMongo(Database):
         self.db = db_
         self.name = "mongo"
         self.db_prefix = "coll"
+        self.bg_color = "orange"
 
     def get(self, coll, num):
         coll = globals()[self.db_prefix + coll.__name__]
@@ -69,7 +78,10 @@ class DatabaseMongo(Database):
         document = {}
     
         for attr in coll.document:
-            document[attr] = getattr(form_, attr).data
+            try:
+                document[attr] = int(getattr(form_, attr).data)
+            except:
+                document[attr] = getattr(form_, attr).data.rstrip()
     
         try:
             coll.collection.insert_one(document)
@@ -86,7 +98,10 @@ class DatabaseMongo(Database):
         try:
             update_query = {'$set': {}}
             for attr in coll.document:
-                update_query['$set'][attr] = getattr(form_, attr).data
+                try:
+                    update_query['$set'][attr] = int(getattr(form_, attr).data)
+                except:
+                    update_query['$set'][attr] = getattr(form_, attr).data.rstrip()
             
             coll.collection.update_one(filter_query, update_query)
             
@@ -97,8 +112,6 @@ class DatabaseMongo(Database):
         coll = globals()[self.db_prefix + coll.__name__]
         filter_query = {}
     
-    
-        # delete __marks__ (composite key)
         for attr in fltr:
             filter_query[attr] = fltr[attr]
     
@@ -113,10 +126,24 @@ class DatabaseMongo(Database):
         filter_query = {}
     
         for attr in fltr:
+            print("attr ", attr)
+            print("value ", fltr[attr])
             filter_query[attr] = fltr[attr]
         
+        print("filter: ", filter_query)
         result = coll.collection.find_one(filter_query)
         return result
+        
+    def get_attrs(self, coll):
+        coll = globals()[self.db_prefix + coll.__name__]
+        return list(coll.document)
+        
+    def get_value(self, obj, attr):
+        return obj[attr]
+        
+    def get_new_id(self, coll):
+        coll = globals()[self.db_prefix + coll.__name__]
+        return int(coll.collection.find_one({}, sort=[("id", -1)])["id"]) + 1
         
     def make_query(self, regionValue, subjectValue, yearValue):
         pipeline = []
@@ -126,7 +153,7 @@ class DatabaseMongo(Database):
                 {'$match': {'test_status': 'Зараховано'}},
                 {
                     '$lookup': {
-                        'from': 'coll_zno_student',
+                        'from': collZnoStudent.collection.name,
                         'localField': 'fk_student_id',
                         'foreignField': 'id',
                         'as': 'student'
@@ -134,7 +161,7 @@ class DatabaseMongo(Database):
                 },
                 {
                     '$lookup': {
-                        'from': 'coll_zno_reg_region',
+                        'from': collZnoRegRegion.collection.name,
                         'localField': 'student.fk_student_reg',
                         'foreignField': 'id',
                         'as': 'reg_region'
@@ -142,7 +169,7 @@ class DatabaseMongo(Database):
                 },
                 {
                     '$lookup': {
-                        'from': 'coll_zno_region',
+                        'from': collZnoRegion.collection.name,
                         'localField': 'reg_region.fk_region',
                         'foreignField': 'id',
                         'as': 'region'
@@ -154,21 +181,14 @@ class DatabaseMongo(Database):
                         'avg_ball': {'$avg': '$ball100'},
                         'min_region': {'$min': '$region.reg'}
                     }
-                },
-                {
-                    '$project': {
-                        '_id': 0,
-                        'avg_ball': 1,
-                        'min_region': 1
-                    }
                 }
             ]
         else:
             pipeline = [
-                {'$match': {'test_status': 'Зараховано', 'region.reg': regionValue}},
+                {'$match': {'test_status': 'Зараховано'}},
                 {
                     '$lookup': {
-                        'from': 'coll_zno_student',
+                        'from': collZnoStudent.collection.name,
                         'localField': 'fk_student_id',
                         'foreignField': 'id',
                         'as': 'student'
@@ -176,7 +196,7 @@ class DatabaseMongo(Database):
                 },
                 {
                     '$lookup': {
-                        'from': 'coll_zno_reg_region',
+                        'from': collZnoRegRegion.collection.name,
                         'localField': 'student.fk_student_reg',
                         'foreignField': 'id',
                         'as': 'reg_region'
@@ -184,45 +204,38 @@ class DatabaseMongo(Database):
                 },
                 {
                     '$lookup': {
-                        'from': 'coll_zno_region',
+                        'from': collZnoRegion.collection.name,
                         'localField': 'reg_region.fk_region',
                         'foreignField': 'id',
                         'as': 'region'
                     }
                 },
+                {'$match': {'region.reg': regionValue}},
                 {
                     '$group': {
                         '_id': '$region.area',
                         'avg_ball': {'$avg': '$ball100'},
                         'min_area': {'$min': '$region.area'}
                     }
-                },
-                {
-                    '$project': {
-                        '_id': 0,
-                        'avg_ball': 1,
-                        'min_area': 1
-                    }
                 }
             ]
+    
+        if yearValue == 1:
+            pipeline.insert(2, {'$match': {'student.birth': {'$gte': 2002}}})
+        elif yearValue == 2:
+            pipeline.insert(2, {'$match': {'student.birth': {'$lte': 2002}}})
     
         if subjectValue != 0:
             pipeline.insert(1, {'$match': {'fk_subject': subjectValue}})
     
-        if yearValue == 1:
-            pipeline.insert(1, {'$match': {'student.birth': {'$gte': 2002}}})
-        elif yearValue == 2:
-            pipeline.insert(1, {'$match': {'student.birth': {'$lte': 2002}}})
-    
-        if regionValue == '0':
-            pipeline.append({'$sort': {'avg_ball': 1}})
-            pipeline.append({'$group': {'_id': '$min_region', 'avg_ball': {'$first': '$avg_ball'}}})
-        else:
-            pipeline.append({'$sort': {'avg_ball': 1}})
-            pipeline.append({'$group': {'_id': '$min_area', 'avg_ball': {'$first': '$avg_ball'}}})
-    
-        result = self.db['ormTblZnoMarks'].aggregate(pipeline)
-        return list(result)
+        result = collZnoMarks.collection.aggregate(pipeline)
+        
+        avg_ball = []
+        reg = []
+        for i in result:
+            reg = reg + i['_id']
+            avg_ball.append(i['avg_ball'])
+        return tuple(avg_ball), tuple(reg)
 
 
 class DatabasePostgre(Database):
@@ -230,6 +243,7 @@ class DatabasePostgre(Database):
         self.db = db_
         self.name = "postgre"
         self.db_prefix = "ormTbl"
+        self.bg_color = "green"
 
     def get(self, tbl, num):
         tbl = globals()[self.db_prefix + tbl.__name__]
@@ -250,7 +264,6 @@ class DatabasePostgre(Database):
             self.db.session.rollback()
             print(f"ERROR: {str(e)}")
 
-    # fltr = dictionary {attr_name; value}
     def update(self, tbl, fltr, form_):
         obj = self.get_by_id(tbl, fltr)
         tbl = globals()[self.db_prefix + tbl.__name__]
@@ -283,6 +296,20 @@ class DatabasePostgre(Database):
             )
                 
         return obj.one()
+        
+    def get_attrs(self, tbl):
+        tbl = globals()[self.db_prefix + tbl.__name__]
+        attrs = []
+        for i in tbl.__table__.columns:
+            attrs.append(i.name)
+        return attrs
+        
+    def get_value(self, obj, attr):
+        return getattr(obj, attr)
+        
+    def get_new_id(self, tbl):
+        tbl = globals()[self.db_prefix + tbl.__name__]
+        return self.db.session.query(func.max(tbl.id)).scalar() + 1
             
     def make_query(self, regionValue, subjectValue, yearValue):
         if regionValue == '0':
@@ -350,7 +377,7 @@ class DatabasePostgre(Database):
             ).order_by(
                 'avg_ball'
             )
-        
-        return query.all()
+        result = query.all()
+        return zip(*result)
         
         
